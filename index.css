@@ -1,0 +1,239 @@
+a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.split {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* transition: flex 0.5s ease-in-out; */
+  position: relative;
+}
+
+.logo {
+  position: fixed;
+  top: 50%;
+  left: 50.25%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.fixed-logo {
+  height: 250px;
+  width: 250px;
+  color: #ffffff;
+}
+
+.left {
+  background-color: black;
+  background-image: url("/Misc/GuessingBGblured.jpg"); /* Replace 'left-background.jpg' with your image path */
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease;
+}
+
+.left:hover {
+  background-image: url("/Misc/GuessingBG.jpg");
+}
+
+.right {
+  background-color: #e74c3c;
+  background-image: url("/Misc/ConnectionsBGblured.jpg"); /* Replace 'left-background.jpg' with your image path */
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease;
+}
+
+.right:hover {
+  background-image: url("/Misc/ConnectionsBG.jpg");
+}
+
+.split .content {
+  text-align: center;
+  color: white;
+}
+
+.start-button {
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.voltage-button {
+  position: relative;
+}
+
+.voltage-button button {
+  color: white;
+  background: #0d1127;
+  padding: 1.5rem 4rem;
+  border-radius: 5rem;
+  border: 5px solid #1e275a;
+  font-size: 1.5rem;
+  line-height: 1em;
+  letter-spacing: 0.075em;
+  transition: background 0.3s;
+}
+
+.voltage-button button:hover {
+  cursor: pointer;
+  background: #242936;
+}
+
+.split:hover .voltage-button svg,
+.split:hover .voltage-button .dots {
+  opacity: 1;
+}
+
+.voltage-button svg {
+  display: block;
+  position: absolute;
+  top: -0.75em;
+  left: -0.25em;
+  width: calc(100% + 0.5em);
+  height: calc(100% + 1.5em);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  transition-delay: 0.1s;
+}
+
+.voltage-button svg path {
+  stroke-dasharray: 100;
+  filter: url("#glow");
+}
+
+.voltage-button svg path.line-1 {
+  stroke: #0faf87;
+  stroke-dashoffset: 0;
+  animation: spark-1 3s linear infinite;
+}
+
+.voltage-button svg path.line-2 {
+  stroke: #3da5e0;
+  stroke-dashoffset: 500;
+  animation: spark-2 3s linear infinite;
+}
+
+.voltage-button .dots {
+  opacity: 0;
+  transition: opacity 0.3s;
+  transition-delay: 0.4s;
+}
+
+.voltage-button .dots .dot {
+  width: 1rem;
+  height: 1rem;
+  background: white;
+  border-radius: 100%;
+  position: absolute;
+  opacity: 0;
+}
+
+.voltage-button .dots .dot-1 {
+  top: 0;
+  left: 20%;
+  animation: fly-up 3s linear infinite;
+}
+
+.voltage-button .dots .dot-2 {
+  top: 0;
+  left: 55%;
+  animation: fly-up 3s linear infinite;
+  animation-delay: 0.5s;
+}
+
+.voltage-button .dots .dot-3 {
+  top: 0;
+  left: 80%;
+  animation: fly-up 3s linear infinite;
+  animation-delay: 1s;
+}
+
+.voltage-button .dots .dot-4 {
+  bottom: 0;
+  left: 30%;
+  animation: fly-down 3s linear infinite;
+  animation-delay: 2.5s;
+}
+
+.voltage-button .dots .dot-5 {
+  bottom: 0;
+  left: 65%;
+  animation: fly-down 3s linear infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes spark-1 {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes spark-2 {
+  to {
+    stroke-dashoffset: -500;
+  }
+}
+
+@keyframes fly-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.2);
+  }
+
+  5% {
+    opacity: 1;
+    transform: translateY(-1.5rem) scale(0.4);
+  }
+
+  10%,
+  100% {
+    opacity: 0;
+    transform: translateY(-3rem) scale(0.2);
+  }
+}
+
+@keyframes fly-down {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.2);
+  }
+
+  5% {
+    opacity: 1;
+    transform: translateY(1.5rem) scale(0.4);
+  }
+
+  10%,
+  100% {
+    opacity: 0;
+    transform: translateY(3rem) scale(0.2);
+  }
+}

@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             setTimeout(() => {
                 messageBox.textContent = ""; // Clear message after hiding
             }, 300); // Delay removing the content to allow the transition to finish
-        }, 2000); // Change 3000 to adjust the display duration (in milliseconds)
+        }, 3000); // Change 3000 to adjust the display duration (in milliseconds)
     }
 
     async function changeMasterWord() {
@@ -164,12 +164,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         return relatedWords;
     }
 
-    function endGame() {
+    async function endGame() {
         const gameInLocalStorage = JSON.parse(localStorage.getItem("WordGuessGame"));
         const lastGame = gameInLocalStorage[gameInLocalStorage.length - 1];
         lastGame.score = score;
         localStorage.setItem("WordGuessGame", JSON.stringify(gameInLocalStorage));
-        alert(`Game over! Your score is ${score}`);
+        //alert(`Game over! Your score is ${score}`);
+        showMessage(`Game over! Your score: ${score}`, "rgb(58, 6, 6)");
+        await new Promise(resolve => setTimeout(resolve, 2000));
         window.location.href = "index.html";
     }
 });

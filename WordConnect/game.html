@@ -86,7 +86,7 @@
             <input
               id="nickname"
               class="input"
-              placeholder="..."
+              placeholder="nickname"
               type="text"
               autocomplete="off"
             />
@@ -107,7 +107,7 @@
             <input
               id="start-value"
               class="input"
-              placeholder="..."
+              placeholder="start-word"
               type="text"
               autocomplete="off"
             />
@@ -122,7 +122,7 @@
             <input
               id="finish-value"
               class="input"
-              placeholder="..."
+              placeholder="finish-word"
               type="text"
               autocomplete="off"
             />
@@ -136,7 +136,7 @@
         </h3>
         <h1 id="word-finish" class="hidden">
           Finish Word: <span id="finish-word"></span>
-          <button onclick="showHint(finishWord)">hint</button>
+          <a id="hint-btn" onclick="showHint(finishWord)">(Show description)</a>
         </h1>
         <p id="hint" class="hidden"></p>
         <p id="timer" class="hidden">

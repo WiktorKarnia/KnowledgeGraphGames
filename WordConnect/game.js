@@ -248,7 +248,8 @@ function updatePathDisplay() {
 //------------------------ HINT ------------------------
 
 async function showHint(word) {
-  fetchWordDescription(word);
+  await fetchWordDescription(word);
+  fetchHintWords(word)
 }
 
 async function fetchWordDescription(word) {
@@ -270,6 +271,14 @@ async function fetchWordDescription(word) {
     document.getElementById("hint").innerText = "Description not available.";
     return false;
   }
+}
+
+async function fetchHintWords(word) {
+  let words = await fetchRelatedWords(word);
+  words = words.slice(0, 10);
+  const hintElement = document.getElementById("hint");
+  const wordsHTML = words.map(word => `<span>${word}</span>`).join(", ");
+  hintElement.innerHTML += `<br><br>Related words: ${wordsHTML}.`;
 }
 
 //------------------------ RESET ------------------------
@@ -294,7 +303,7 @@ function resetGame() {
   const elementsToHide = [
     'word-start', 'word-finish', 'input-fields', 
     'reset-btn', 'path', 'word-current', 
-    'path-length', 'hint', 'timer', 'blob'
+    'path-length', 'hint', 'timer', 'blob', 'hint-btn'
   ];
 
   elementsToClear.forEach(item => {

@@ -7,12 +7,10 @@ let startTime;
 let liveTimerInterval;
 const endpoint = 'https://api.datamuse.com/words?ml=';
 
-
 //------------------------ START PAGE ------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('manual-input').addEventListener('change', toggleInputFields);
-  
   displayScoreboard();
 });
 
@@ -28,32 +26,34 @@ function toggleInputFields() {
 function prepareGame() {
   document.getElementById("prepare-btn").classList.add('hidden');
   document.getElementById("manual-input-label").classList.remove('hidden');
-  document.getElementById("nickname").classList.remove('hidden');
+  document.getElementById("nickname-div").classList.remove('hidden');
   document.getElementById("start-btn").classList.remove('hidden');
 }
 
-
-
 //------------------------ SCOREBOARD ------------------------
 
-function saveScore(elapsedSeconds) {
+function saveScore(elapsedMilliseconds) {
   const nickname = document.getElementById('nickname').value || 'Anonymous';
   const newScore = {
-      nickname,
-      time: elapsedSeconds,
-      startWord,
-      finishWord,
-      path: path.join(' -> ')
+    nickname,
+    time: elapsedMilliseconds,
+    startWord,
+    finishWord,
+    path: path.join(' -> ')
   };
-  
+
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
   scores.push(newScore);
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 function clearScoreboard() {
+if (confirm("Press a button!")) {
   localStorage.removeItem('scores');
   displayScoreboard();
+} else {
+  console.log("Canceled");
+}
 }
 
 function displayScoreboard() {
@@ -62,17 +62,20 @@ function displayScoreboard() {
 
   scoreboardBody.innerHTML = '';
 
-  const numRows = Math.max(5, scores.length);
+  const newestScores = scores.slice(-5).reverse();
 
-  for (let i = 0; i < numRows; i++) {
-    const score = scores[i] || {}; 
+  for (let i = 0; i < 5; i++) {
+    const score = newestScores[i] || {};
     let formattedTime = '';
+    let pathText = '';
 
-    if (score.time !== undefined && score.time !== 0) { 
-      formattedTime = formatTime(score.time);
+    if (score.startWord && score.finishWord) {
+      pathText = `${score.startWord} <span class="arrow"> ➔ </span> ${score.finishWord}`;
     }
 
-    const pathText = (score.startWord && score.finishWord) ? `${score.startWord} -> ${score.finishWord}` : '';
+    if (score.time !== undefined && score.time !== 0) {
+      formattedTime = formatTime(score.time);
+    }
 
     scoreboardBody.innerHTML += `
       <tr>
@@ -83,21 +86,21 @@ function displayScoreboard() {
     `;
   }
 
+
   const scorePaths = document.querySelectorAll('.score-path');
   scorePaths.forEach(scorePath => {
     scorePath.addEventListener('click', () => {
       const scoreIndex = scorePath.getAttribute('data-score');
-      customAlert.alert(scores[scoreIndex]);
+      customAlert.alert(newestScores[scoreIndex]);
     });
   });
 }
-
 
 function toggleScoreboard() {
   const scoreboard = document.getElementById('scoreboard');
   const isHidden = scoreboard.classList.toggle('hidden');
   if (!isHidden) {
-      displayScoreboard();
+    displayScoreboard();
   }
 }
 
@@ -105,14 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
   displayScoreboard();
 });
 
-
 //------------------------ PLAY ------------------------
 
 async function startGame() {
   document.getElementById('message').innerText = '';
 
   if (!targetWordsValid()) {
-      return;
+    return;
   }
 
   const targetsValid = await checkTargets(startWord, finishWord);
@@ -134,7 +136,6 @@ async function startGame() {
   startTimer(); 
   startLiveTimer();
 }
-
 
 //------------------------ PREPARE GAME ------------------------
 
@@ -161,7 +162,7 @@ async function checkTargets(targetStartWord, targetFinishWord) {
   return true;
 }
 
-function targetWordsValid(){
+function targetWordsValid() {
   if (document.getElementById('manual-input').checked) {
     startWord = document.getElementById('start-value').value;
     finishWord = document.getElementById('finish-value').value;
@@ -183,11 +184,11 @@ function targetWordsValid(){
       return false;
     } else {
       finishWord = faker.commerce.product();
+      targetWordsValid();
     }
   }
   return true;
 }
-
 
 //------------------------ RELATED WORDS ------------------------
 
@@ -197,48 +198,36 @@ async function fetchRelatedWords(word) {
   return data.map(item => item.word);
 }
 
-// function displayWords(words) {
-//   const relatedWordsDiv = document.getElementById('related-words');
-//   relatedWordsDiv.innerHTML = '';
-//   words.forEach(word => {
-//     const wordElement = document.createElement('div');
-//     wordElement.classList.add('word');
-//     wordElement.innerText = word;
-//     wordElement.onclick = () => handleWordClick(word);
-//     relatedWordsDiv.appendChild(wordElement);
-//   });
-// }
-
-// ---------------- LIMITED WORDS ------------------------
 function displayWords(words) {
-  const limit = 50
+  console.log(words);
+  const limit = 30;
   const relatedWordsDiv = document.getElementById('related-words');
   relatedWordsDiv.innerHTML = '';
-  
+
   for (let i = 0; i < Math.min(words.length, limit); i++) {
-      const wordElement = document.createElement('div');
-      wordElement.classList.add('word');
-      wordElement.innerText = words[i];
-      wordElement.onclick = () => handleWordClick(words[i]);
-      relatedWordsDiv.appendChild(wordElement);
+    const wordElement = document.createElement('div');
+    wordElement.classList.add('word');
+    wordElement.innerText = words[i];
+    wordElement.onclick = () => handleWordClick(words[i]);
+    relatedWordsDiv.appendChild(wordElement);
   }
 }
 
-
 function handleWordClick(word) {
   score += 1;
-  finishWord = finishWord.toLowerCase()
-  if (word === finishWord) {
-      document.getElementById('message').innerText = 'Congratulations! You reached the finish word.';
-      document.getElementById('related-words').innerHTML = '';
-      document.getElementById('word-current').classList.add('hidden');
-      path.push(word);
-      const elapsedMilliseconds = stopTimer();
-      saveScore(elapsedMilliseconds); 
+  finishWord = finishWord.toLowerCase();
+  console.log(`Clicked word: ${word}, Finish word: ${finishWord}`);
+  if (word.toLowerCase() === finishWord) {
+    document.getElementById('message').innerText = 'Congratulations! You reached the finish word.';
+    document.getElementById('related-words').innerHTML = '';
+    document.getElementById('word-current').classList.add('hidden');
+    path.push(word);
+    const elapsedMilliseconds = stopTimer();
+    saveScore(elapsedMilliseconds); 
   } else {
-      currentWord = word;
-      path.push(word);
-      updateRelatedWords();
+    currentWord = word;
+    path.push(word);
+    updateRelatedWords();
   }
   document.getElementById('points').innerText = score;
   updatePathDisplay();
@@ -251,15 +240,15 @@ async function updateRelatedWords() {
 }
 
 //------------------------ PATH ------------------------
+
 function updatePathDisplay() {
-  document.getElementById('path').innerText = `Path: ${path.join(' -> ')}`;
+  const pathElement = document.getElementById('path');
+  pathElement.innerHTML = `Path: ${path.map(word => `<span>${word}</span>`).join('<span class="arrow"> ➔ </span>')}`;
 }
-
-
 //------------------------ HINT ------------------------
 
 async function showHint(word) {
-  fetchWordDescription(word)
+  fetchWordDescription(word);
 }
 
 async function fetchWordDescription(word) {
@@ -275,17 +264,13 @@ async function fetchWordDescription(word) {
     data[0].meanings[0].definitions[0].definition
   ) {
     const description = data[0].meanings[0].definitions[0].definition;
-    document.getElementById(
-      "hint"
-    ).innerText = `Description: ${description}`;
+    document.getElementById("hint").innerText = `Description: ${description}`;
     return true;
   } else {
-    document.getElementById("hint").innerText =
-      "Description not available.";
+    document.getElementById("hint").innerText = "Description not available.";
     return false;
   }
 }
-
 
 //------------------------ RESET ------------------------
 
@@ -309,7 +294,7 @@ function resetGame() {
   const elementsToHide = [
     'word-start', 'word-finish', 'input-fields', 
     'reset-btn', 'path', 'word-current', 
-    'path-length', 'hint', 'timer'
+    'path-length', 'hint', 'timer', 'blob'
   ];
 
   elementsToClear.forEach(item => {
@@ -319,10 +304,10 @@ function resetGame() {
     document.getElementById(id).classList.add('hidden');
   });
 
+  document.getElementById("prepare-btn").classList.remove('hidden');
   document.getElementById("scoreboard").classList.remove('hidden');
-  displayScoreboard()
+  displayScoreboard();
 }
-
 
 //------------------------ MISCELLANEOUS ------------------------
 
@@ -334,25 +319,27 @@ function showElements() {
 function hideElements() {
   const elementsToHide = [
     'manual-input-label', 'input-fields', 
-    'start-btn', 'scoreboard', 'nickname'
+    'start-btn', 'scoreboard', 'nickname-div', 'prepare-btn'
   ];
 
   elementsToHide.forEach(id => {
     document.getElementById(id).classList.add('hidden');
-})
+  });
 }
-
 
 //------------------------ TIMERS ------------------------
 
 function startTimer() {
+  console.log("Starting timer");
   startTime = new Date(); 
 }
 
 function stopTimer() {
+  console.log("Stopping timer");
   clearInterval(liveTimerInterval);
   const finishTime = new Date(); 
   const elapsedTime = finishTime - startTime;
+  document.getElementById('blob').classList.add('hidden');
   return elapsedTime;
 }
 
@@ -363,11 +350,10 @@ function formatTime(milliseconds) {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${millisecondsPart.toString().padStart(2, '0')}`;
 }
 
-
-
 //------------------------ LIVETIMER ------------------------
 
 function startLiveTimer() {
+  console.log("Starting live timer");
   updateLiveTimer();
   liveTimerInterval = setInterval(updateLiveTimer, 1);
 }
@@ -378,7 +364,6 @@ function updateLiveTimer() {
   const formattedTime = formatTime(elapsedTime);
   document.getElementById('timer-display').innerText = formattedTime;
 }
-
 
 //------------------------ ALERT ------------------------
 
@@ -406,12 +391,12 @@ function CustomAlert(){
 
     let winH = window.innerHeight;
     dialogoverlay.style.height = winH + "px";
-    
+
     dialogbox.style.top = "100px";
 
     dialogoverlay.style.display = "block";
     dialogbox.style.display = "block";
-    
+
     document.getElementById('dialogboxhead').style.display = 'block';
 
     if (typeof title === 'undefined') {
@@ -421,12 +406,12 @@ function CustomAlert(){
     }
     document.getElementById('dialogboxbody').innerHTML = `<div class="path-container">${formattedPath}</div>`;
     document.getElementById('dialogboxfoot').innerHTML = '<button class="pure-material-button-contained active" onclick="customAlert.ok()">OK</button>';
-    
+
     // Focus on the dialog box
     dialogbox.focus();
     dialogbox.setAttribute("tabindex", "-1"); // Ensure it can be focused
   }
-  
+
   this.ok = function(){
     dialogbox.style.display = "none";
     dialogoverlay.style.display = "none";
@@ -434,5 +419,3 @@ function CustomAlert(){
 }
 
 let customAlert = new CustomAlert();
-
-

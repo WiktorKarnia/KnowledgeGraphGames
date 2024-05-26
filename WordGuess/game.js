@@ -7,112 +7,127 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let timeLeft = 60;
     let score = 0;
-    let relatedWordsCount = 0;
+    let correctGuesses = 0;
+    let consecutiveCorrectGuesses = 0;
+    let guessedWords = [];
+    let masterWord = '';
+    let relatedWords = [];
 
-    /*
+    
     const timer = setInterval(() => {
         timeLeft--;
         timeLeftElement.textContent = timeLeft;
+        if (timeLeft <= 10) {
+            timeLeftElement.style.color = "red"; // Change color to red if time left is 10 or less
+        } else {
+            timeLeftElement.style.color = "rgb(46, 188, 188)"; // Reset color if time left is more than 10
+        }
         if (timeLeft <= 0) {
             clearInterval(timer);
             endGame();
         }
-    }, 1000)*/
+    }, 1000);
 
-    const randomNoun = await getRandomNoun();
-    masterWordElement.textContent = randomNoun;
-    const masterWord = pluralize.singular(randomNoun);
-
-    console.log(masterWord);
-
-    let relatedWords = await getRelatedWords(masterWord);
-
-    console.log(relatedWords);
+    // Fetch initial master word and related words
+    ({ masterWord, relatedWords } = await fetchNewMasterWord());
 
     submitWordButton.addEventListener("click", submitWord);
-
     relatedWordInput.addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
             submitWord();
         }
     });
 
-    // Initialize the guessedWords array
-    let guessedWords = [];
-    let consecutiveCorrectGuesses = 0;
+    async function fetchNewMasterWord() {
+        const randomNoun = await getRandomNoun();
+        masterWordElement.textContent = randomNoun;
+        const masterWord = pluralize.singular(randomNoun);
+        const relatedWords = await getRelatedWords(masterWord);
+        console.log(relatedWords);
+        return { masterWord, relatedWords };
+    }
 
-    function submitWord() {
+    async function submitWord() {
         const relatedWord = relatedWordInput.value.trim().toLowerCase();
         console.log(relatedWord);
 
-        // Check if the word has already been guessed
         if (guessedWords.includes(relatedWord)) {
             alert("You already submitted this word.");
             relatedWordInput.value = "";
-            return; // Exit the function early if word is already guessed
+            return;
         }
 
-        // Add the word to the guessedWords array
         guessedWords.push(relatedWord);
 
-        if (relatedWord && relatedWords.some(word => word.includes(relatedWord))) {
-            console.log(relatedWord + ' is related!');
-            
+        if (relatedWord && relatedWords.includes(relatedWord)) {
+            showMessage("Good guess! +2pt", "rgb(46, 188, 188)");
+            console.log(`${relatedWord} is related!`);
             incrementScore();
 
-            // Remove only the related word that contains the master word
-            const index = relatedWords.findIndex(word => word.includes(relatedWord));
+            const index = relatedWords.indexOf(relatedWord);
             if (index !== -1) {
-                removeWord(relatedWords[index]);
                 relatedWords.splice(index, 1);
+            }
+
+            correctGuesses++;
+            consecutiveCorrectGuesses++; // Increment consecutive correct guesses counter
+
+            if (consecutiveCorrectGuesses === 6) {
+                score += 6; // Add 6 extra points for 6 consecutive correct guesses
+                showMessage("6 combo! +6 pts", "rgb(46, 188, 188)");
+                consecutiveCorrectGuesses = 0; // Reset the consecutive correct guesses counter
+                scoreElement.textContent = score;
+            }
+
+            if (correctGuesses % 4 === 0) {
+                await changeMasterWord();
             }
 
             relatedWordInput.value = "";
         } else {
-            console.log(relatedWord + " is not related!");
-
-            consecutiveCorrectGuesses = 0;
-            
+            showMessage("Wrong guess! -2pts", "rgb(58, 6, 6)");
+            console.log(`${relatedWord} is not related!`);
             decrementScore();
-
             relatedWordInput.value = "";
+            consecutiveCorrectGuesses = 0;
         }
     }
 
+    function showMessage(message, color) {
+        const messageBox = document.getElementById("message-box");
+        messageBox.textContent = message;
+        messageBox.style.color = color;
+        messageBox.classList.add("show"); // Add 'show' class to display message box
+        setTimeout(() => {
+            messageBox.classList.remove("show"); // Remove 'show' class after some time
+            setTimeout(() => {
+                messageBox.textContent = ""; // Clear message after hiding
+            }, 300); // Delay removing the content to allow the transition to finish
+        }, 2000); // Change 3000 to adjust the display duration (in milliseconds)
+    }
 
-    function removeWord(wordToRemove) {
-        relatedWords = relatedWords.filter(word => word !== wordToRemove);
+    async function changeMasterWord() {
+        const newMaster = await fetchNewMasterWord();
+        masterWord = newMaster.masterWord;
+        relatedWords = newMaster.relatedWords;
+
+        timeLeft += 10;
+        //score += 4;
+        showMessage("Next word! +10s", "rgb(46, 188, 188)");
+        scoreElement.textContent = score;
     }
 
     async function getRandomNoun() {
         return faker.commerce.product();
-        //return faker.random.word();
     }
 
-
     function incrementScore() {
-        relatedWordsCount++
-        consecutiveCorrectGuesses++;
-
-        //console.log(consecutiveCorrectGuesses);
-
-        if (relatedWordsCount % 5 === 0) {
-            score += 2; // Add 2 points for every multiple of 5
-        }
-        if (relatedWordsCount % 25 === 0) {
-            score += 5; // Add 5 points if the user guesses a word 5 times without error
-        }
-        if (consecutiveCorrectGuesses === 5) {
-            score += 5;
-            consecutiveCorrectGuesses = 0;
-        }
-
-        score++
+        score += 2;
         scoreElement.textContent = score;
     }
 
     function decrementScore() {
-        score--;
+        score -= 2;
         scoreElement.textContent = score;
     }
 
@@ -121,109 +136,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         const minRelatedNouns = 50;
         const maxRetries = 5;
         let attempts = 0;
-    
-        try {
-            while (attempts < maxRetries) {
-                // Constructing the full API URL with the query parameters
+        let relatedWords = [];
+
+        while (attempts < maxRetries) {
+            try {
                 const fullUrl = `${apiUrl}?ml=${encodeURIComponent(masterWord)}&max=100`;
-                
-                // Making the API request
                 const response = await fetch(fullUrl);
+                if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
-    
-                // Parsing the response
-                const relatedWords = data.map(item => item.word.toLowerCase());
-    
-                // Check if the number of related words is sufficient
+
+                relatedWords = data.map(item => item.word.toLowerCase());
+
                 if (relatedWords.length >= minRelatedNouns) {
                     return relatedWords;
                 }
-    
+
                 attempts++;
-            }
-            
-            // If after max retries, still not enough related words, return what we have
-            return relatedWords;
-    
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            window.location.reload();
-        }
-    }
-    
-
-    /*
-    async function getRelatedWords(masterWord) {
-        const apiUrl = "https://dbpedia.org/sparql";
-        const minRelatedNouns = 50;
-        const maxRetries = 5;
-        let attempts = 0;
-        
-        const sparqlQuery = `
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX dbo: <http://dbpedia.org/ontology/>
-        SELECT DISTINCT ?relatedNounLabel ?description
-        WHERE {
-            ?subject rdfs:label "${masterWord}"@en .
-            ?subject dbo:wikiPageWikiLink ?relatedNoun .
-            ?relatedNoun rdfs:label ?relatedNounLabel .
-            OPTIONAL { ?relatedNoun dbo:abstract ?description . }
-            FILTER (lang(?relatedNounLabel) = 'en')
-            FILTER (lang(?description) = 'en' || lang(?description) = '')
-        }
-        LIMIT 100
-        `;
-
-        /*
-        const sparqlQuery = `
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX dbo: <http://dbpedia.org/ontology/>
-            SELECT DISTINCT ?relatedNounLabel ?description
-            WHERE {
-                ?subject rdfs:label "${masterWord}"@en .
-                ?subject dbo:wikiPageWikiLink ?intermediate .
-                ?intermediate dbo:wikiPageWikiLink ?relatedNoun .
-                ?relatedNoun rdfs:label ?relatedNounLabel .
-                OPTIONAL { ?relatedNoun dbo:abstract ?description . }
-                FILTER (lang(?relatedNounLabel) = 'en')
-                FILTER (lang(?description) = 'en' || lang(?description) = '')
-            }
-            LIMIT 100
-        `;
-
-        try {
-            // Encoding the SPARQL query for URL
-            const encodedQuery = encodeURIComponent(sparqlQuery);
-        
-            // Constructing the full API URL with the encoded SPARQL query
-            const fullUrl = `${apiUrl}?query=${encodedQuery}&format=json`;
-            
-            while (attempts < maxRetries) {
-                // Making the API request
-                const response = await fetch(fullUrl);
-                const data = await response.json();
-        
-                // Parsing the response
-                const results = data.results.bindings;
-                const relatedNouns = results.map(result => result.relatedNounLabel.value.toLowerCase());
-        
-                // Check if the number of related nouns is sufficient
-                if (relatedNouns.length >= minRelatedNouns) {
-                    return relatedNouns;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                if (attempts >= maxRetries - 1) {
+                    alert('Failed to fetch related words. Please try again later.');
+                    window.location.reload();
                 }
-        
                 attempts++;
             }
-            
-            // If after max retries, still not enough related nouns, return what we have
-            return relatedNouns;
-    
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            window.location.reload();
         }
-    }*/
-    
+        return relatedWords;
+    }
+
     function endGame() {
         const gameInLocalStorage = JSON.parse(localStorage.getItem("WordGuessGame"));
         const lastGame = gameInLocalStorage[gameInLocalStorage.length - 1];
@@ -233,4 +173,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "index.html";
     }
 });
-

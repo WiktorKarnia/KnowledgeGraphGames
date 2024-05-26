@@ -44,26 +44,26 @@ html {
 
 .left {
   background-color: black;
-  background-image: url("/Misc/GuessingBGblured.jpg"); /* Replace 'left-background.jpg' with your image path */
+  background-image: url("Misc/GuessingBGblured.jpg"); /* Replace 'left-background.jpg' with your image path */
   background-size: cover;
   background-position: center;
   transition: background-image 0.3s ease;
 }
 
 .left:hover {
-  background-image: url("/Misc/GuessingBG.jpg");
+  background-image: url("Misc/GuessingBG.jpg");
 }
 
 .right {
   background-color: #e74c3c;
-  background-image: url("/Misc/ConnectionsBGblured.jpg"); /* Replace 'left-background.jpg' with your image path */
+  background-image: url("Misc/ConnectionsBGblured.jpg"); /* Replace 'left-background.jpg' with your image path */
   background-size: cover;
   background-position: center;
   transition: background-image 0.3s ease;
 }
 
 .right:hover {
-  background-image: url("/Misc/ConnectionsBG.jpg");
+  background-image: url("Misc/ConnectionsBG.jpg");
 }
 
 .split .content {

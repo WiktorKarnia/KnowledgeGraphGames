@@ -1,0 +1,65 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 50px;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #e74c3c;
+}
+
+#game-info {
+    background-color: #34495e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+#game-info p {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+#game-play {
+    background-color: #34495e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#related-word {
+    font-size: 1.2em;
+    padding: 10px;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+#submit-word {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: #ecf0f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+#submit-word:hover {
+    background-color: #c0392b;
+}
+
+#submit-word:active {
+    background-color: #a93226;
+}

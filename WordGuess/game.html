@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.1.11/chance.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pluralize/8.0.0/pluralize.min.js"></script>
+    <title>Word Scramble Game</title>
+    <link rel="stylesheet" href="styles-game.css">
+</head>
+<body>
+    <h1>Word Scramble Game</h1>
+    <div id="game-info">
+        <p>Master Word: <span id="master-word"></span></p>
+        <p>Time Left: <span id="time-left">60</span> seconds</p>
+        <p>Score: <span id="score">0</span></p>
+    </div>
+    <div id="game-play">
+        <input type="text" id="related-word" placeholder="Enter a related word">
+        <button id="submit-word">Submit</button>
+    </div>
+    <script type="module" src="game.js"></script>
+</body>
+</html>

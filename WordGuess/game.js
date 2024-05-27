@@ -130,6 +130,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         score -= 2;
         scoreElement.textContent = score;
     }
+    
+// Constructing the SPARQL query
+// const sparqlQuery = `
+//   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+//   PREFIX dbo: <http://dbpedia.org/ontology/>
+//   SELECT ?relatedNoun ?description
+//   WHERE {
+//     ?subject rdfs:label "${nounn}"@en .
+//     ?subject dbo:wikiPageWikiLink ?relatedNoun .
+//     ?relatedNoun dbo:abstract ?description .
+//     FILTER (lang(?description) = 'en')
+//   }
+// `;
 
     async function getRelatedWords(masterWord) {
         const apiUrl = "https://api.datamuse.com/words";

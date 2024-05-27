@@ -48,7 +48,7 @@ function saveScore(elapsedMilliseconds) {
 }
 
 function clearScoreboard() {
-if (confirm("Press a button!")) {
+if (confirm("Are you sure you want to clear your scores?")) {
   localStorage.removeItem('scores');
   displayScoreboard();
 } else {

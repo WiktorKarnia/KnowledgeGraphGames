@@ -6,4 +6,4 @@ A web-based word association game platform developed using HTML, JavaScript, and
   
 Both games feature individual leaderboards, tracking players' performance based on completion time or score.
 
-Try it out: ## [Knowledge Graph Games](https://wiktorkarnia.github.io/KnowledgeGraphGames/)
+Try it out: [Knowledge Graph Games](https://wiktorkarnia.github.io/KnowledgeGraphGames/)

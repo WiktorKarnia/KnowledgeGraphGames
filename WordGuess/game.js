@@ -174,6 +174,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 attempts++;
             }
         }
+        console.log(relatedWords)
         return relatedWords;
     }
 

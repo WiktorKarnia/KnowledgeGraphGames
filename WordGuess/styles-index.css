@@ -1,13 +1,13 @@
 /* General Styles */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    color: #91a6b9;
-    background-image: linear-gradient(to bottom right, #0e1618, #47757a);
-    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: #91a6b9;
+  background-image: linear-gradient(to bottom right, #0e1618, #47757a);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
 
@@ -29,7 +29,7 @@ body {
   background-size: 250px 250px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("/Misc/logo.png");
+  background-image: url("../Misc/logo.png");
   border-radius: 50%;
 }
 
@@ -39,7 +39,7 @@ body {
   background-size: 250px 250px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("/Misc/logo.png");
+  background-image: url("../Misc/logo.png");
   border-radius: 50%;
 }
 
@@ -52,45 +52,45 @@ body {
 }
 
 .card {
-    position: relative;
-    width: 500px; /* Increased width */
-    height: 650px; /* Increased height */
-    border-radius: 14px;
-    z-index: 1111;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 20px 20px 60px #0e1618, -20px -20px 60px #47757a;
+  position: relative;
+  width: 500px; /* Increased width */
+  height: 650px; /* Increased height */
+  border-radius: 14px;
+  z-index: 1111;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 20px 20px 60px #0e1618, -20px -20px 60px #47757a;
 }
 
 .bg {
-    position: absolute;
-    top: 7px;
-    left: 7px;
-    width: 485px; /* Adjusted width */
-    height: 635px; /* Adjusted height */
-    z-index: 2;
-    background-color: #2d4c50;
-    backdrop-filter: blur(24px);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 485px; /* Adjusted width */
+  height: 635px; /* Adjusted height */
+  z-index: 2;
+  background-color: #2d4c50;
+  backdrop-filter: blur(24px);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .blob {
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    left: 50%;
-    width: 400px; /* Adjusted width */
-    height: 400px; /* Adjusted height */
-    border-radius: 50%;
-    /*
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 400px; /* Adjusted width */
+  height: 400px; /* Adjusted height */
+  border-radius: 50%;
+  /*
     background-color: rgb(255, 255, 255);
     opacity: 1;
     filter: blur(12px);
@@ -99,187 +99,190 @@ body {
 }
 
 @keyframes blob-bounce {
-    0% {
-        transform: translate(-100%, -100%) translate3d(0, 0, 0);
-    }
+  0% {
+    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+  }
 
-    25% {
-        transform: translate(-100%, -100%) translate3d(100%, 0, 0);
-    }
+  25% {
+    transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+  }
 
-    50% {
-        transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
-    }
+  50% {
+    transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+  }
 
-    75% {
-        transform: translate(-100%, -100%) translate3d(0, 100%, 0);
-    }
+  75% {
+    transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+  }
 
-    100% {
-        transform: translate(-100%, -100%) translate3d(0, 0, 0);
-    }
+  100% {
+    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+  }
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 3;
 }
 
 .voltage-button {
-    position: relative;
-    margin-top: 30px;
+  position: relative;
+  margin-top: 30px;
+}
+
+.voltage-button button {
+  color: white;
+  background: #0e1618;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 5rem;
+  border: 5px solid #152225;
+  font-size: 1.2rem;
+  line-height: 1em;
+  letter-spacing: 0.075em;
+  transition: background 0.3s;
+}
+
+.voltage-button button:hover {
+  cursor: pointer;
+  background: #1c2d31;
+}
+
+.voltage-button button:hover + svg,
+.voltage-button button:hover + svg + .dots {
+  opacity: 1;
+}
+
+.voltage-button svg {
+  display: block;
+  position: absolute;
+  top: -0.75em;
+  left: -0.25em;
+  width: calc(100% + 0.5em);
+  height: calc(100% + 1.5em);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  transition-delay: 0.1s;
+}
+
+.voltage-button svg path {
+  stroke-dasharray: 100;
+  filter: url("#glow");
+}
+
+.voltage-button svg path.line-1 {
+  stroke: #0faf87;
+  stroke-dashoffset: 0;
+  animation: spark-1 3s linear infinite;
+}
+
+.voltage-button svg path.line-2 {
+  stroke: #3da5e0;
+  stroke-dashoffset: 500;
+  animation: spark-2 3s linear infinite;
+}
+
+.voltage-button .dots {
+  opacity: 0;
+  transition: opacity 0.3s;
+  transition-delay: 0.4s;
+}
+
+.voltage-button .dots .dot {
+  width: 1rem;
+  height: 1rem;
+  background: white;
+  border-radius: 100%;
+  position: absolute;
+  opacity: 0;
+}
+
+.voltage-button .dots .dot-1 {
+  top: 0;
+  left: 20%;
+  animation: fly-up 3s linear infinite;
+}
+
+.voltage-button .dots .dot-2 {
+  top: 0;
+  left: 55%;
+  animation: fly-up 3s linear infinite;
+  animation-delay: 0.5s;
+}
+
+.voltage-button .dots .dot-3 {
+  top: 0;
+  left: 80%;
+  animation: fly-up 3s linear infinite;
+  animation-delay: 1s;
+}
+
+.voltage-button .dots .dot-4 {
+  bottom: 0;
+  left: 30%;
+  animation: fly-down 3s linear infinite;
+  animation-delay: 2.5s;
+}
+
+.voltage-button .dots .dot-5 {
+  bottom: 0;
+  left: 65%;
+  animation: fly-down 3s linear infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes spark-1 {
+  to {
+    stroke-dashoffset: -1000;
   }
-  
-  .voltage-button button {
-    color: white;
-    background: #0e1618;
-    padding: 1rem 2rem 1rem 2rem;
-    border-radius: 5rem;
-    border: 5px solid #152225;
-    font-size: 1.2rem;
-    line-height: 1em;
-    letter-spacing: 0.075em;
-    transition: background 0.3s;
+}
+
+@keyframes spark-2 {
+  to {
+    stroke-dashoffset: -500;
   }
-  
-  .voltage-button button:hover {
-    cursor: pointer;
-    background: #1c2d31;
+}
+
+@keyframes fly-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.2);
   }
-  
-  .voltage-button button:hover + svg, .voltage-button button:hover + svg + .dots {
+
+  5% {
     opacity: 1;
+    transform: translateY(-1.5rem) scale(0.4);
   }
-  
-  .voltage-button svg {
-    display: block;
-    position: absolute;
-    top: -0.75em;
-    left: -0.25em;
-    width: calc(100% + 0.5em);
-    height: calc(100% + 1.5em);
-    pointer-events: none;
+
+  10%,
+  100% {
     opacity: 0;
-    transition: opacity 0.4s;
-    transition-delay: 0.1s;
+    transform: translateY(-3rem) scale(0.2);
   }
-  
-  .voltage-button svg path {
-    stroke-dasharray: 100;
-    filter: url("#glow");
-  }
-  
-  .voltage-button svg path.line-1 {
-    stroke: #0faf87;
-    stroke-dashoffset: 0;
-    animation: spark-1 3s linear infinite;
-  }
-  
-  .voltage-button svg path.line-2 {
-    stroke: #3da5e0;
-    stroke-dashoffset: 500;
-    animation: spark-2 3s linear infinite;
-  }
-  
-  .voltage-button .dots {
+}
+
+@keyframes fly-down {
+  0% {
     opacity: 0;
-    transition: opacity 0.3s;
-    transition-delay: 0.4s;
+    transform: translateY(0) scale(0.2);
   }
-  
-  .voltage-button .dots .dot {
-    width: 1rem;
-    height: 1rem;
-    background: white;
-    border-radius: 100%;
-    position: absolute;
+
+  5% {
+    opacity: 1;
+    transform: translateY(1.5rem) scale(0.4);
+  }
+
+  10%,
+  100% {
     opacity: 0;
+    transform: translateY(3rem) scale(0.2);
   }
-  
-  .voltage-button .dots .dot-1 {
-    top: 0;
-    left: 20%;
-    animation: fly-up 3s linear infinite;
-  }
-  
-  .voltage-button .dots .dot-2 {
-    top: 0;
-    left: 55%;
-    animation: fly-up 3s linear infinite;
-    animation-delay: 0.5s;
-  }
-  
-  .voltage-button .dots .dot-3 {
-    top: 0;
-    left: 80%;
-    animation: fly-up 3s linear infinite;
-    animation-delay: 1s;
-  }
-  
-  .voltage-button .dots .dot-4 {
-    bottom: 0;
-    left: 30%;
-    animation: fly-down 3s linear infinite;
-    animation-delay: 2.5s;
-  }
-  
-  .voltage-button .dots .dot-5 {
-    bottom: 0;
-    left: 65%;
-    animation: fly-down 3s linear infinite;
-    animation-delay: 1.5s;
-  }
-  
-  @keyframes spark-1 {
-    to {
-      stroke-dashoffset: -1000;
-    }
-  }
-  
-  @keyframes spark-2 {
-    to {
-      stroke-dashoffset: -500;
-    }
-  }
-  
-  @keyframes fly-up {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(0.2);
-    }
-  
-    5% {
-      opacity: 1;
-      transform: translateY(-1.5rem) scale(0.4);
-    }
-  
-    10%, 100% {
-      opacity: 0;
-      transform: translateY(-3rem) scale(0.2);
-    }
-  }
-  
-  @keyframes fly-down {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(0.2);
-    }
-  
-    5% {
-      opacity: 1;
-      transform: translateY(1.5rem) scale(0.4);
-    }
-  
-    10%, 100% {
-      opacity: 0;
-      transform: translateY(3rem) scale(0.2);
-    }
-  }
-  
+}
+
 .input-container {
   width: 90%;
   display: flex;
@@ -291,64 +294,63 @@ body {
 }
 
 .input-container .bash-text {
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: white;
 }
 
 .input-container .bash-text .user {
-  color: #91a6b9;;
+  color: #91a6b9;
 }
 
 .input-container .bash-text .vm {
-  color: #2DD4BF;
+  color: #2dd4bf;
 }
 
 .input-container .bash-text .char {
-  color: #A78BFA;
+  color: #a78bfa;
 }
 
-.input-container input[type=text].input {
+.input-container input[type="text"].input {
   background-color: transparent;
   border: none;
   outline: none;
   color: white;
 }
 #score-board {
-    margin-top: 20px;
-    max-width: 600px;
-    margin: auto;
-    text-align: center;
-    z-index: 1111111;
-  }
-  
-  .styled-table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.15);
-    width: 100%; /* Ensures the table takes the full width of the container */
-  }
-  
-  .styled-table thead tr {
-    background-color: #0e1618;
-    color: #ffffff;
-    text-align: center;
-  }
-  
-  .styled-table th,
-  .styled-table td {
-    padding: 12px 15px;
-  }
-  
-  .styled-table tbody tr {
-    border-bottom: 1px solid #0e1618;
-    text-align: center;
-  }
-  
-  .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #0e1618;
-    text-align: center;
-  }
-  
+  margin-top: 20px;
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+  z-index: 1111111;
+}
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.15);
+  width: 100%; /* Ensures the table takes the full width of the container */
+}
+
+.styled-table thead tr {
+  background-color: #0e1618;
+  color: #ffffff;
+  text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #0e1618;
+  text-align: center;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #0e1618;
+  text-align: center;
+}

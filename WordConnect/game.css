@@ -28,7 +28,7 @@ body {
   background-size: 250px 250px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("/Misc/logo.png");
+  background-image: url("../Misc/logo.png");
   border-radius: 50%;
 }
 
@@ -38,7 +38,7 @@ body {
   background-size: 250px 250px;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("/Misc/logo.png");
+  background-image: url("../Misc/logo.png");
   border-radius: 50%;
 }
 
